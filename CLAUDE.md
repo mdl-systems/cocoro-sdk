@@ -117,6 +117,7 @@ async *sseGet<T>(path: string): AsyncGenerator<T>
 
 - **src/client.ts が起点**。`agentUrl` を渡すと `agentHttp` が初期化され `AgentResource` に注入
 - **JWT認証は auth.ts が自動管理**（外部から意識不要）
+- **501 認証フォールバック**: サーバーの `/auth/token` が 501 Not Implemented を返した場合 (JWT無効・APIキー認証モード時)、自動で API キーを Bearer トークンとしてフォールバック使用します。
 - **SSEストリーミングは2種類**:
   - `chat.stream()` → POST SSE (cocoro-core)
   - `task.stream()` → GET SSE via `sseGet()` (cocoro-agent)
@@ -150,3 +151,4 @@ COCORO_API_KEY=<your-api-key>
 |------|---------| 
 | 2026-03-08 | 初版: CocoroClient・ChatResource・全リソース・19テスト |
 | 2026-03-09 | agentUrl対応・TaskHandle・sseGet・AgentResource全面刷新・types更新 |
+| 2026-03-09 | 認証マネージャー: 501 Not Implemented時のAPIキーフォールバック対応 |
