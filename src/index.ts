@@ -49,6 +49,8 @@ export type {
     MemorySearchParams,
     VectorSearchParams,
 } from './types/memory.js'
+export type { DeleteResult } from './resources/memory.js'
+
 
 // 型定義 — Agent (cocoro-agent対応)
 export type {

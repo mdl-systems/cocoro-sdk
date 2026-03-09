@@ -63,6 +63,7 @@ export class AuthManager {
                     'X-API-Key': this.apiKey,
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify({ api_key: this.apiKey }),
                 signal: controller.signal,
             })
 
@@ -70,15 +71,22 @@ export class AuthManager {
                 throw new CocoroAuthError()
             }
 
-            if (!res.ok) {
-                const body = await res.json().catch(() => null)
-                throw new CocoroAuthError(
-                    `認証失敗: HTTP ${res.status} ${res.statusText}`,
-                )
+            if (res.status === 501) {
+                // JWT未設定（API Key認証モード）の場合、そのままAPI_KEYをトークンとして返す
+                this.token = this.apiKey;
+                this.expiresAt = Date.now() + 1000 * 60 * 60 * 24 * 365; // 1年間
+                return this.token;
             }
 
-            const data: TokenResponse = await res.json()
-            this.token = data.access_token
+            if (!res.ok) {
+                const body = await res.json().catch(() => null);
+                throw new CocoroAuthError(
+                    `認証失敗: HTTP ${res.status} ${res.statusText}`,
+                );
+            }
+
+            const data: TokenResponse = await res.json();
+            this.token = data.access_token;
 
             // expires_in が返ってきた場合はそれを、なければ55分をキャッシュ期限に設定
             const expiresIn = data.expires_in ?? 55 * 60
