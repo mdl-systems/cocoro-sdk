@@ -126,15 +126,48 @@ export class ChatResource {
 
     /**
      * 通常チャット（レスポンス一括取得）
+     *
+     * cocoro-core APIは snake_case フィールド名と文字列 emotion を返すため、
+     * ここで SDK の ChatResponse 型（camelCase + EmotionState オブジェクト）に変換する。
      */
     async send(req: ChatRequest): Promise<ChatResponse> {
-        return this.http.request<ChatResponse>('/chat', {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const raw = await this.http.request<any>('/chat', {
             method: 'POST',
             body: {
                 message: req.message,
                 session_id: req.sessionId,
             },
         })
+
+        // APIレスポンスを SDK 型に正規化
+        // API: { response, session_id, action, emotion: string, task_id }
+        // SDK: { id, text, action, emotion: EmotionState, sessionId, timestamp }
+        const emotionName: string =
+            typeof raw.emotion === 'string'
+                ? raw.emotion
+                : (raw.emotion?.dominant ?? 'neutral')
+
+        const emotionState = typeof raw.emotion === 'object' && raw.emotion !== null
+            ? raw.emotion
+            : {
+                happiness: emotionName === 'happiness' ? 0.8 : 0.0,
+                sadness: emotionName === 'sadness' ? 0.8 : 0.0,
+                anger: emotionName === 'anger' ? 0.8 : 0.0,
+                fear: emotionName === 'fear' ? 0.8 : 0.0,
+                trust: emotionName === 'trust' ? 0.8 : 0.0,
+                surprise: emotionName === 'surprise' ? 0.8 : 0.0,
+                dominant: emotionName,
+            }
+
+        return {
+            id: raw.id ?? raw.session_id ?? '',
+            text: raw.text ?? raw.response ?? '',
+            action: raw.action ?? 'chat',
+            emotion: emotionState,
+            sessionId: raw.sessionId ?? raw.session_id ?? '',
+            timestamp: raw.timestamp ?? new Date().toISOString(),
+        }
     }
 
     /**
