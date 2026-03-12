@@ -19,6 +19,7 @@ export type { ChatStream } from './resources/chat.js'
 export type { NodeDashboard } from './resources/monitor.js'
 export type { HealthStatus } from './resources/health.js'
 export { TaskHandle } from './resources/agent.js'
+export type { SetupResource } from './resources/setup.js'
 
 // 型定義 — Chat
 export type {
@@ -74,3 +75,13 @@ export type {
 
 // 型定義 — Common
 export type { ApiError, PaginationParams, Timestamped } from './types/common.js'
+
+// 型定義 — Setup (v0.2.0)
+export type {
+    SetupMode,
+    SetupSession,
+    SetupQuestion,
+    SetupAnswerRequest,
+    SetupAnswerResult,
+    SetupResult,
+} from './types/setup.js'

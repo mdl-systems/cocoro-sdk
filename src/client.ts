@@ -11,6 +11,7 @@ import { MemoryResource } from './resources/memory.js'
 import { AgentResource } from './resources/agent.js'
 import { MonitorResource } from './resources/monitor.js'
 import { HealthResource } from './resources/health.js'
+import { SetupResource } from './resources/setup.js'
 
 export interface CocoroClientConfig {
     /** cocoro-coreのベースURL（末尾スラッシュ不要）例: 'http://192.168.50.92:8001' */
@@ -52,6 +53,8 @@ export class CocoroClient {
     readonly monitor: MonitorResource
     /** ヘルスチェック */
     readonly health: HealthResource
+    /** Boot Wizard / セットアップ */
+    readonly setup: SetupResource
 
     private readonly _auth: AuthManager
     private readonly _http: HttpClient
@@ -90,5 +93,6 @@ export class CocoroClient {
         this.agent = new AgentResource(this._http, agentHttp)
         this.monitor = new MonitorResource(this._http)
         this.health = new HealthResource(this._http)
+        this.setup = new SetupResource(this._http)
     }
 }

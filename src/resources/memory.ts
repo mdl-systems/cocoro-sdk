@@ -1,6 +1,7 @@
 // ============================================================
 // memory.ts — メモリ管理リソース
 // ============================================================
+// v0.2.0: memoryList() / memorySearch() エイリアスを追加
 
 import type { HttpClient } from '../http.js'
 import type {
@@ -97,5 +98,29 @@ export class MemoryResource {
         return this.http.request<DeleteResult>('/memory/all', {
             method: 'DELETE',
         })
+    }
+
+    // ── v0.2.0 エイリアス ────────────────────────────────────────
+
+    /**
+     * memoryList() — getShortTerm() のエイリアス
+     * 短期記憶（最近の会話）を取得する
+     *
+     * @example
+     * const entries = await cocoro.memory.memoryList()
+     */
+    async memoryList(params: import('../types/memory.js').ShortTermParams = {}): Promise<import('../types/memory.js').MemoryEntry[]> {
+        return this.getShortTerm(params)
+    }
+
+    /**
+     * memorySearch() — search() のエイリアス
+     * テキストでメモリを検索する
+     *
+     * @example
+     * const results = await cocoro.memory.memorySearch('昨日の話')
+     */
+    async memorySearch(query: string, limit?: number): Promise<import('../types/memory.js').MemorySearchResult[]> {
+        return this.search({ query, limit })
     }
 }
