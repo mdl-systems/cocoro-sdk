@@ -4,7 +4,24 @@ All notable changes to `@mdl-systems/cocoro-sdk` are documented here.
 
 ---
 
+## [1.0.0] — 2026-03-14
+
+### Changed
+
+- **バージョン 1.0.0 正式リリース** — npm publish 対応
+- `package.json`: `files`, `keywords`, `repository`, `publishConfig`, `prepublishOnly` を整備
+- `.npmignore`: `src/`, `tests/`, `examples/`, 設定ファイル, `CLAUDE.md` をパッケージから除外
+- `README.md`: v1.0.0 向けに全 API リファレンスを全面更新（nodes / sync / brief / WebSocket events 追記）
+- GitHub Actions `publish.yml`: `v*` タグ push 時に npm publish を自動実行
+
+### Added
+
+- `.github/workflows/publish.yml` — `v*` タグ push トリガーの npm 自動公開 CI
+
+---
+
 ## [0.3.0] — 2026-03-14
+
 
 ### Added
 

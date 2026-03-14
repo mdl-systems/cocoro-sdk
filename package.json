@@ -1,7 +1,7 @@
 {
     "name": "@mdl-systems/cocoro-sdk",
-    "version": "0.3.0",
-    "description": "TypeScript SDK for cocoro-core API",
+    "version": "1.0.0",
+    "description": "TypeScript SDK for cocoro-core — Personality AI Operating System",
     "author": "MDL Systems",
     "license": "MIT",
     "type": "module",
@@ -16,7 +16,10 @@
         }
     },
     "files": [
-        "dist"
+        "dist",
+        "README.md",
+        "CHANGELOG.md",
+        "LICENSE"
     ],
     "scripts": {
         "build": "tsup",
@@ -25,7 +28,28 @@
         "test:run": "vitest run",
         "type-check": "tsc --noEmit",
         "type-check:all": "tsc --noEmit -p tsconfig.test.json",
-        "lint": "tsc --noEmit"
+        "lint": "tsc --noEmit",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "cocoro",
+        "ai",
+        "personality",
+        "sdk",
+        "typescript",
+        "llm",
+        "agent"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mdl-systems/cocoro-sdk.git"
+    },
+    "homepage": "https://github.com/mdl-systems/cocoro-sdk#readme",
+    "bugs": {
+        "url": "https://github.com/mdl-systems/cocoro-sdk/issues"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "devDependencies": {
         "tsup": "^8.0.0",

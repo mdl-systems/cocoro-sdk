@@ -1,0 +1,41 @@
+# ソースコード（ビルド済みのdist/のみ公開）
+src/
+tests/
+examples/
+
+# 設定・開発ファイル
+tsconfig*.json
+tsup.config.ts
+vitest.config.ts
+*.tsbuildinfo
+
+# エディタ・OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# CI/CD
+.github/
+
+# ローカル環境
+.env
+.env.local
+.env.*.local
+node_modules/
+
+# デバッグ
+*.log
+npm-debug.log*
+
+# packテスト用tgz
+*.tgz
+
+# Gitメタ
+.git/
+.gitignore
+
+# 開発ドキュメント
+CLAUDE.md
