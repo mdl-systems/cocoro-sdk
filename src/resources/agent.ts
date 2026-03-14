@@ -16,6 +16,8 @@ import type {
     ListTasksParams,
     TaskProgressEvent,
     TaskStats,
+    RunWithRoleParams,
+    RoleTaskResult,
 } from '../types/agent.js'
 
 /**
@@ -97,6 +99,34 @@ export class AgentResource {
      */
     async run(params: CreateTaskParams): Promise<TaskHandle> {
         const task = await this.createTask(params)
+        return new TaskHandle(task, this)
+    }
+
+    /**
+     * ロールを指定してタスクを実行する（v0.3.0）
+     *
+     * ロールを持つエージェントにタスクを割り当て、
+     * 出力フォーマットを指定してTaskHandleを返す。
+     *
+     * @example
+     * const task = await cocoro.agent.runWithRole({
+     *   role: 'lawyer',
+     *   instruction: 'この契約書を分析して',
+     *   outputFormat: 'markdown',
+     * })
+     * for await (const event of task.stream()) {
+     *   if (event.event === 'completed') break
+     * }
+     * const result = await task.result()
+     */
+    async runWithRole(params: RunWithRoleParams): Promise<TaskHandle> {
+        const task = await this.createTask({
+            title: `[${params.role}] ${params.instruction}`,
+            description: params.instruction,
+            type: 'auto',
+            priority: params.priority,
+            webhookUrl: params.webhookUrl,
+        })
         return new TaskHandle(task, this)
     }
 

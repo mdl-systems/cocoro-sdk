@@ -12,6 +12,10 @@ import { AgentResource } from './resources/agent.js'
 import { MonitorResource } from './resources/monitor.js'
 import { HealthResource } from './resources/health.js'
 import { SetupResource } from './resources/setup.js'
+import { NodesResource } from './resources/nodes.js'
+import { SyncResource } from './resources/sync.js'
+import { BriefResource } from './resources/brief.js'
+import { EventsResource } from './resources/events.js'
 
 export interface CocoroClientConfig {
     /** cocoro-coreのベースURL（末尾スラッシュ不要）例: 'http://192.168.50.92:8001' */
@@ -55,6 +59,14 @@ export class CocoroClient {
     readonly health: HealthResource
     /** Boot Wizard / セットアップ */
     readonly setup: SetupResource
+    /** ノード管理 (v0.3.0) */
+    readonly nodes: NodesResource
+    /** シンクロ率 (v0.3.0) */
+    readonly sync: SyncResource
+    /** デイリーブリーフィング (v0.3.0) */
+    readonly brief: BriefResource
+    /** WebSocketリアルタイムイベント (v0.3.0) */
+    readonly events: EventsResource
 
     private readonly _auth: AuthManager
     private readonly _http: HttpClient
@@ -85,6 +97,9 @@ export class CocoroClient {
             ? new HttpClient(agentUrl.replace(/\/$/, ''), this._auth, timeout)
             : null
 
+        // WebSocket URL: http → ws に変換
+        const wsBaseUrl = normalizedBase.replace(/^http/, 'ws')
+
         // リソース初期化
         this.chat = new ChatResource(this._http)
         this.personality = new PersonalityResource(this._http)
@@ -94,5 +109,11 @@ export class CocoroClient {
         this.monitor = new MonitorResource(this._http)
         this.health = new HealthResource(this._http)
         this.setup = new SetupResource(this._http)
+
+        // v0.3.0 リソース
+        this.nodes = new NodesResource(this._http)
+        this.sync = new SyncResource(this._http)
+        this.brief = new BriefResource(this._http)
+        this.events = new EventsResource(wsBaseUrl, () => this._auth.getToken())
     }
 }

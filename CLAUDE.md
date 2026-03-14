@@ -31,7 +31,11 @@ src/
 │   ├── personality.ts
 │   ├── emotion.ts
 │   ├── memory.ts
-│   ├── agent.ts        ← run() / stream() / result() / TaskHandle  ★ cocoro-agent対応
+│   ├── agent.ts        ← run() / runWithRole() / stream() / result() / TaskHandle  ★ v0.3.0
+│   ├── nodes.ts        ← list() / register() / update() / unregister() / ping()    ★ NEW
+│   ├── sync.ts         ← rate() / history()                                         ★ NEW
+│   ├── brief.ts        ← daily() / get(date)                                        ★ NEW
+│   ├── events.ts       ← CocoroEventConnection（WebSocket + 自動再接続）              ★ NEW
 │   ├── monitor.ts
 │   └── health.ts
 ├── types/
@@ -39,12 +43,16 @@ src/
 │   ├── emotion.ts
 │   ├── personality.ts
 │   ├── memory.ts
-│   ├── agent.ts        ← Task / OrgStatus / TaskStats / TaskProgressEvent 等
+│   ├── agent.ts        ← Task / RunWithRoleParams / RoleTaskResult 等
+│   ├── node.ts         ← CocoroNode / NodeStatus / RegisterNodeParams 等             ★ NEW
+│   ├── sync.ts         ← SyncRate / SyncTrend / SyncHistory 等                      ★ NEW
+│   ├── brief.ts        ← DailyBriefing / BriefingSection                            ★ NEW
+│   ├── events.ts       ← CocoroEventType / CocoroEventMap 等                        ★ NEW
 │   └── common.ts
 └── examples/
     ├── basic-chat.ts
     ├── streaming-chat.ts
-    └── agent-demo.ts   ← cocoro-agent E2Eデモ ★ NEW
+    └── agent-demo.ts   ← cocoro-agent E2Eデモ
 ```
 
 ## アーキテクチャ
@@ -148,7 +156,9 @@ COCORO_API_KEY=<your-api-key>
 ## 更新履歴
 
 | 日付 | 更新内容 |
-|------|---------| 
+|------|---------|
 | 2026-03-08 | 初版: CocoroClient・ChatResource・全リソース・19テスト |
 | 2026-03-09 | agentUrl対応・TaskHandle・sseGet・AgentResource全面刷新・types更新 |
 | 2026-03-09 | 認証マネージャー: 501 Not Implemented時のAPIキーフォールバック対応 |
+| 2026-03-12 | v0.2.0: SetupResource・memoryList/memorySearch エイリアス |
+| 2026-03-14 | v0.3.0: runWithRole・NodesResource・SyncResource・BriefResource・WebSocket EventsResource |

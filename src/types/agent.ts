@@ -1,5 +1,5 @@
 // ============================================================
-// agent.ts — エージェント型定義（cocoro-agent v0.1対応）
+// agent.ts — エージェント型定義（cocoro-agent v0.3.0対応）
 // ============================================================
 
 export type AgentStatus = 'idle' | 'busy' | 'offline'
@@ -93,6 +93,30 @@ export interface CreateTaskParams {
     assignTo?: string
     priority?: TaskPriority
     webhookUrl?: string
+}
+
+/** ロール指定タスク実行パラメータ (v0.3.0) */
+export interface RunWithRoleParams {
+    /** ロール名（例: 'lawyer', 'researcher', 'accountant'） */
+    role: string
+    /** エージェントへの指示 */
+    instruction: string
+    /** 出力フォーマット（例: 'markdown', 'json', 'plain'） */
+    outputFormat?: 'markdown' | 'json' | 'plain' | string
+    /** タスクの優先度 */
+    priority?: TaskPriority
+    /** Webhook URL */
+    webhookUrl?: string
+    /** 追加コンテキスト */
+    context?: Record<string, unknown>
+}
+
+/** ロール指定タスクの実行結果 (v0.3.0) */
+export interface RoleTaskResult extends TaskResult {
+    /** 実行したロール */
+    role: string
+    /** 出力フォーマット */
+    outputFormat?: string
 }
 
 /** タスク一覧パラメータ */

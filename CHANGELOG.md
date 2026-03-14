@@ -4,7 +4,47 @@ All notable changes to `@mdl-systems/cocoro-sdk` are documented here.
 
 ---
 
+## [0.3.0] — 2026-03-14
+
+### Added
+
+#### Agent Roles（エージェントロール対応）
+- `cocoro.agent.runWithRole(params)` — ロールを指定してタスクを実行し `TaskHandle` を返す
+  - `role`: 実行ロール名 (例: `'lawyer'`, `'researcher'`, `'accountant'`)
+  - `instruction`: エージェントへの指示文
+  - `outputFormat`: 出力フォーマット指定 (`'markdown'` / `'json'` / `'plain'`)
+- 新規型定義: `RunWithRoleParams`, `RoleTaskResult`
+
+#### Nodes API（ノード管理）
+- `cocoro.nodes.list()` — 登録済みノード一覧取得 (`GET /nodes`)
+- `cocoro.nodes.get(nodeId)` — ノード詳細取得 (`GET /nodes/{id}`)
+- `cocoro.nodes.register(params)` — ノード登録 (`POST /nodes/register`)
+- `cocoro.nodes.update(nodeId, params)` — ノード情報更新 (`PUT /nodes/{id}`)
+- `cocoro.nodes.unregister(nodeId)` — ノード登録解除 (`DELETE /nodes/{id}`)
+- `cocoro.nodes.ping(nodeId)` — ノード死活確認 (`POST /nodes/{id}/ping`)
+- 新規型定義: `CocoroNode`, `NodeStatus`, `RegisterNodeParams`, `RegisterNodeResult`, `NodeListResponse`
+
+#### Sync Rate API（シンクロ率）
+- `cocoro.sync.rate()` — 現在のシンクロ率取得 (`GET /sync/rate`)
+- `cocoro.sync.history(days)` — シンクロ率履歴取得 (`GET /sync/history?days=N`)
+- 新規型定義: `SyncRate`, `SyncTrend`, `SyncHistory`, `SyncHistoryEntry`
+
+#### Brief API（デイリーブリーフィング）
+- `cocoro.brief.daily()` — 本日のブリーフィング取得 (`GET /brief/daily`)
+- `cocoro.brief.get(date)` — 指定日のブリーフィング取得 (`GET /brief/{date}`)
+- 新規型定義: `DailyBriefing`, `BriefingSection`
+
+#### WebSocket Events（リアルタイムイベント）
+- `cocoro.events.connect(path?)` — WebSocket接続を開始し `CocoroEventConnection` を返す
+- `CocoroEventConnection` — 型付きイベントエミッター（`.on()` / `.off()` / `.once()` / `.close()`）
+- 自動再接続（デフォルト: 3秒後）
+- 対応イベント: `task.completed` / `task.failed` / `task.started` / `task.progress` / `emotion.changed` / `memory.updated` / `sync.rate.changed` / `node.online` / `node.offline`
+- 新規型定義: `CocoroEventType`, `CocoroEventMap`, `CocoroEvent` と各ペイロード型
+
+---
+
 ## [0.2.0] — 2026-03-12
+
 
 ### Added
 

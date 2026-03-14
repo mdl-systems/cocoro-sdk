@@ -20,6 +20,7 @@ export type { NodeDashboard } from './resources/monitor.js'
 export type { HealthStatus } from './resources/health.js'
 export { TaskHandle } from './resources/agent.js'
 export type { SetupResource } from './resources/setup.js'
+export { CocoroEventConnection } from './resources/events.js'
 
 // 型定義 — Chat
 export type {
@@ -71,6 +72,8 @@ export type {
     TaskStats,
     EmotionSnapshot,
     PersonalityInfo,
+    RunWithRoleParams,
+    RoleTaskResult,
 } from './types/agent.js'
 
 // 型定義 — Common
@@ -85,3 +88,40 @@ export type {
     SetupAnswerResult,
     SetupResult,
 } from './types/setup.js'
+
+// 型定義 — Node (v0.3.0)
+export type {
+    CocoroNode,
+    NodeStatus,
+    RegisterNodeParams,
+    RegisterNodeResult,
+    NodeListResponse,
+} from './types/node.js'
+
+// 型定義 — Sync (v0.3.0)
+export type {
+    SyncRate,
+    SyncTrend,
+    SyncHistory,
+    SyncHistoryEntry,
+} from './types/sync.js'
+
+// 型定義 — Brief (v0.3.0)
+export type {
+    DailyBriefing,
+    BriefingSection,
+} from './types/brief.js'
+
+// 型定義 — Events / WebSocket (v0.3.0)
+export type {
+    CocoroEventType,
+    CocoroEventMap,
+    CocoroEvent,
+    TaskCompletedPayload,
+    TaskFailedPayload,
+    TaskProgressPayload,
+    EmotionChangedPayload,
+    MemoryUpdatedPayload,
+    SyncRateChangedPayload,
+    NodeStatusPayload,
+} from './types/events.js'
