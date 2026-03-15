@@ -9,26 +9,31 @@ All notable changes to `@mdl-systems/cocoro-sdk` are documented here.
 ### Added
 
 #### Nodes API 拡張
-- `cocoro.nodes.register()` — `port` フィールドのサポートを確認・整備
+- `cocoro.nodes.register()` — `port` / `name` フィールドのサポートを確認・整備
+- `cocoro.nodes.list()` / `register()` が `agentUrl` 指定時は cocoro-agent の `/nodes/*` に接続するよう対応
 - ノード登録時に `roles` 配列でエージェントロールを指定可能
 
 #### Agent Tasks 拡張（`agent.createTask` 強化）
 - `CreateTaskParams` に `roleId` フィールドを追加（ロールを持つエージェントに割り当て）
-- `CreateTaskParams` に `outputFormat` フィールドを追加 (`'markdown'` / `'json'` / `'plain'`)
-- `body` パラメータの `role_id` / `output_format` として cocoro-core に送信
-- `agent.getResult(taskId)` — `getTaskResult()` のエイリアスを追加
+- `CreateTaskParams` に `outputFormat` フィールドを追加 (`'markdown'` / `'json'` / `'slides'` / `'email'`)
+- `body` パラメータの `role_id` / `output_format` として cocoro-agent に送信
+- `agent.getResult(taskId)` — `getTaskResult()` の短縮形エイリアスを追加
 
-#### Stats API（新規）
-- `cocoro.stats.get()` — システム全体の統計情報取得 (`GET /stats`)
-  - `totalChats`, `totalMemories`, `syncRate`, `uptime`, `avgResponseTimeMs` 等
+#### Stats API拡張（cocoro-agent 対応）
+- `cocoro.stats.get()` — システム全体の統計情報取得（cocoro-core）
+- `cocoro.stats.getAgentStats()` — エージェントタスク統計取得（cocoro-agent `GET /stats`）
+  - `active_tasks`, `completed_today`, `success_rate`, `by_role` 等の詳細統計
+- `cocoro.stats.getPerformance()` — APIパフォーマンス情報（cocoro-agent `GET /stats/performance`）
+  - `avg_latency_ms`, `p95_latency_ms`, `error_rate`, `requests_total`
+- `cocoro.stats.checkSlow(thresholdSec?)` — スロータスク検出トリガー（cocoro-agent `POST /stats/check-slow`）
 - `cocoro.stats.memory()` — メモリ統計取得 (`GET /stats/memory`、フォールバック対応)
 - `cocoro.stats.chat()` — チャット統計取得 (`GET /stats/chat`、フォールバック対応)
-- 新規型定義: `SystemStats`
+- 新規型定義: `AgentStats` (TaskStats のエイリアス), `PerformanceSummary`, `SystemStats`
 
 ### Fixed
 
-- `basic-chat.ts` の接続テストで cocoro-core (`192.168.50.92:8001`) への接続を確認済み ✅
-  - `status=healthy, version=1.0.0` で応答確認
+- `NodesResource` に `agentHttp` を追加 — `agentUrl` 指定時に cocoro-agent の `/nodes/*` に接続
+- `StatsResource` に `agentHttp` を追加 — cocoro-agent と cocoro-core 両方の統計を取得可能に
 
 ---
 

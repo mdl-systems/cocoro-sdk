@@ -11,7 +11,15 @@ import type {
 } from '../types/node.js'
 
 export class NodesResource {
-    constructor(private readonly http: HttpClient) { }
+    constructor(
+        private readonly http: HttpClient,
+        private readonly agentHttp: HttpClient | null = null,
+    ) { }
+
+    /** 実際のHTTPクライアントを選択（agentUrl優先） */
+    private get _http(): HttpClient {
+        return this.agentHttp ?? this.http
+    }
 
     /**
      * 登録済みノード一覧を取得する
@@ -21,7 +29,7 @@ export class NodesResource {
      * nodes.forEach(n => console.log(`${n.nodeId}: ${n.status}`))
      */
     async list(): Promise<CocoroNode[]> {
-        const res = await this.http.request<NodeListResponse | CocoroNode[]>('/nodes')
+        const res = await this._http.request<NodeListResponse | CocoroNode[]>('/nodes')
         // レスポンスが { nodes: [...] } 形式か配列形式かを両対応
         if (Array.isArray(res)) return res
         return (res as NodeListResponse).nodes ?? []
@@ -31,7 +39,7 @@ export class NodesResource {
      * 特定ノードの詳細情報を取得する
      */
     async get(nodeId: string): Promise<CocoroNode> {
-        return this.http.request<CocoroNode>(`/nodes/${nodeId}`)
+        return this._http.request<CocoroNode>(`/nodes/${nodeId}`)
     }
 
     /**
@@ -45,7 +53,7 @@ export class NodesResource {
      * })
      */
     async register(params: RegisterNodeParams): Promise<RegisterNodeResult> {
-        const raw = await this.http.request<any>('/nodes/register', {
+        const raw = await this._http.request<any>('/nodes/register', {
             method: 'POST',
             body: {
                 node_id: params.nodeId,
@@ -67,7 +75,7 @@ export class NodesResource {
      * ノード情報を更新する
      */
     async update(nodeId: string, params: Partial<RegisterNodeParams>): Promise<CocoroNode> {
-        return this.http.request<CocoroNode>(`/nodes/${nodeId}`, {
+        return this._http.request<CocoroNode>(`/nodes/${nodeId}`, {
             method: 'PUT',
             body: {
                 ip: params.ip,
@@ -82,7 +90,7 @@ export class NodesResource {
      * ノードの登録を解除する
      */
     async unregister(nodeId: string): Promise<{ success: boolean }> {
-        return this.http.request<{ success: boolean }>(`/nodes/${nodeId}`, {
+        return this._http.request<{ success: boolean }>(`/nodes/${nodeId}`, {
             method: 'DELETE',
         })
     }
@@ -91,7 +99,7 @@ export class NodesResource {
      * ノードの死活確認
      */
     async ping(nodeId: string): Promise<{ alive: boolean; latencyMs?: number }> {
-        return this.http.request(`/nodes/${nodeId}/ping`, {
+        return this._http.request(`/nodes/${nodeId}/ping`, {
             method: 'POST',
         })
     }

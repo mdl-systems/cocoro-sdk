@@ -114,12 +114,12 @@ export class CocoroClient {
         this.setup = new SetupResource(this._http)
 
         // v0.3.0 リソース
-        this.nodes = new NodesResource(this._http)
+        this.nodes = new NodesResource(this._http, agentHttp)
         this.sync = new SyncResource(this._http)
         this.brief = new BriefResource(this._http)
         this.events = new EventsResource(wsBaseUrl, () => this._auth.getToken())
 
         // v1.1.0 リソース
-        this.stats = new StatsResource(this._http)
+        this.stats = new StatsResource(this._http, agentHttp)
     }
 }
