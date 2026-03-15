@@ -91,9 +91,14 @@ export interface CreateTaskParams {
     description?: string
     type?: TaskType
     assignTo?: string
+    /** ロールID指定（v1.1.0: ロールを持つエージェントに割り当て） */
+    roleId?: string
+    /** 出力フォーマット指定（v1.1.0: 'markdown' | 'json' | 'plain'） */
+    outputFormat?: 'markdown' | 'json' | 'plain' | string
     priority?: TaskPriority
     webhookUrl?: string
 }
+
 
 /** ロール指定タスク実行パラメータ (v0.3.0) */
 export interface RunWithRoleParams {
@@ -140,10 +145,22 @@ export interface TaskProgressEvent {
     }
 }
 
-/** タスク統計 */
+/** タスク統計（cocoro-agent v1.0.0 詳細版） */
 export interface TaskStats {
+    // 基本集計（後方互換）
     total: number
     byStatus: Record<string, number>
     byAgent: Array<{ agent: string; count: number; avgDuration: number }>
     recentTasks: Task[]
+    // 詳細統計（v1.0.0追加フィールド）
+    total_tasks?: number
+    completed_today?: number
+    active_tasks?: number
+    average_duration_seconds?: number
+    success_rate?: number
+    by_role?: Record<string, { count: number; avg_duration: number }>
+    by_hour?: Array<{ hour: number; count: number }>
 }
+
+/** タスク統計エイリアス（cocoro.stats.get() 用） */
+export type AgentStats = TaskStats

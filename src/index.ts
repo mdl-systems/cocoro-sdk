@@ -21,6 +21,7 @@ export type { HealthStatus } from './resources/health.js'
 export { TaskHandle } from './resources/agent.js'
 export type { SetupResource } from './resources/setup.js'
 export { CocoroEventConnection } from './resources/events.js'
+export type { SystemStats } from './resources/stats.js'
 
 // 型定義 — Chat
 export type {

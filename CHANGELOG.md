@@ -4,7 +4,36 @@ All notable changes to `@mdl-systems/cocoro-sdk` are documented here.
 
 ---
 
+## [1.1.0] — 2026-03-15
+
+### Added
+
+#### Nodes API 拡張
+- `cocoro.nodes.register()` — `port` フィールドのサポートを確認・整備
+- ノード登録時に `roles` 配列でエージェントロールを指定可能
+
+#### Agent Tasks 拡張（`agent.createTask` 強化）
+- `CreateTaskParams` に `roleId` フィールドを追加（ロールを持つエージェントに割り当て）
+- `CreateTaskParams` に `outputFormat` フィールドを追加 (`'markdown'` / `'json'` / `'plain'`)
+- `body` パラメータの `role_id` / `output_format` として cocoro-core に送信
+- `agent.getResult(taskId)` — `getTaskResult()` のエイリアスを追加
+
+#### Stats API（新規）
+- `cocoro.stats.get()` — システム全体の統計情報取得 (`GET /stats`)
+  - `totalChats`, `totalMemories`, `syncRate`, `uptime`, `avgResponseTimeMs` 等
+- `cocoro.stats.memory()` — メモリ統計取得 (`GET /stats/memory`、フォールバック対応)
+- `cocoro.stats.chat()` — チャット統計取得 (`GET /stats/chat`、フォールバック対応)
+- 新規型定義: `SystemStats`
+
+### Fixed
+
+- `basic-chat.ts` の接続テストで cocoro-core (`192.168.50.92:8001`) への接続を確認済み ✅
+  - `status=healthy, version=1.0.0` で応答確認
+
+---
+
 ## [1.0.0] — 2026-03-14
+
 
 ### Changed
 

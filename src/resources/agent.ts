@@ -139,6 +139,8 @@ export class AgentResource {
                 description: params.description,
                 type: params.type ?? 'auto',
                 assignTo: params.assignTo,
+                role_id: params.roleId,
+                output_format: params.outputFormat,
                 priority: params.priority ?? 'normal',
                 webhook_url: params.webhookUrl,
             },
@@ -163,6 +165,18 @@ export class AgentResource {
     /** タスク最終結果取得 */
     async getTaskResult(taskId: string): Promise<TaskResult> {
         return this._http.request<TaskResult>(`/tasks/${taskId}/result`)
+    }
+
+    /**
+     * タスク結果取得（getTaskResultの短縮形エイリアス）
+     *
+     * @example
+     * const task = await cocoro.agent.createTask({ title: 'Pythonでソートを実装して', roleId: 'engineer' })
+     * // ... wait for completion
+     * const result = await cocoro.agent.getResult(task.task_id)
+     */
+    async getResult(taskId: string): Promise<TaskResult> {
+        return this.getTaskResult(taskId)
     }
 
     /**

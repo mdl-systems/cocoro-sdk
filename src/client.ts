@@ -16,6 +16,7 @@ import { NodesResource } from './resources/nodes.js'
 import { SyncResource } from './resources/sync.js'
 import { BriefResource } from './resources/brief.js'
 import { EventsResource } from './resources/events.js'
+import { StatsResource } from './resources/stats.js'
 
 export interface CocoroClientConfig {
     /** cocoro-coreのベースURL（末尾スラッシュ不要）例: 'http://192.168.50.92:8001' */
@@ -67,6 +68,8 @@ export class CocoroClient {
     readonly brief: BriefResource
     /** WebSocketリアルタイムイベント (v0.3.0) */
     readonly events: EventsResource
+    /** システム統計 (v1.1.0) */
+    readonly stats: StatsResource
 
     private readonly _auth: AuthManager
     private readonly _http: HttpClient
@@ -115,5 +118,8 @@ export class CocoroClient {
         this.sync = new SyncResource(this._http)
         this.brief = new BriefResource(this._http)
         this.events = new EventsResource(wsBaseUrl, () => this._auth.getToken())
+
+        // v1.1.0 リソース
+        this.stats = new StatsResource(this._http)
     }
 }

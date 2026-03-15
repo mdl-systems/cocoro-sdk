@@ -32,10 +32,11 @@ src/
 │   ├── emotion.ts
 │   ├── memory.ts
 │   ├── agent.ts        ← run() / runWithRole() / stream() / result() / TaskHandle  ★ v0.3.0
-│   ├── nodes.ts        ← list() / register() / update() / unregister() / ping()    ★ NEW
-│   ├── sync.ts         ← rate() / history()                                         ★ NEW
-│   ├── brief.ts        ← daily() / get(date)                                        ★ NEW
-│   ├── events.ts       ← CocoroEventConnection（WebSocket + 自動再接続）              ★ NEW
+│   ├── nodes.ts        ← list() / register() / update() / unregister() / ping()    ★ v0.3.0
+│   ├── sync.ts         ← rate() / history()                                         ★ v0.3.0
+│   ├── brief.ts        ← daily() / get(date)                                        ★ v0.3.0
+│   ├── events.ts       ← CocoroEventConnection（WebSocket + 自動再接続）              ★ v0.3.0
+│   ├── stats.ts        ← get() / memory() / chat()                                  ★ NEW v1.1.0
 │   ├── monitor.ts
 │   └── health.ts
 ├── types/
@@ -162,3 +163,5 @@ COCORO_API_KEY=<your-api-key>
 | 2026-03-09 | 認証マネージャー: 501 Not Implemented時のAPIキーフォールバック対応 |
 | 2026-03-12 | v0.2.0: SetupResource・memoryList/memorySearch エイリアス |
 | 2026-03-14 | v0.3.0: runWithRole・NodesResource・SyncResource・BriefResource・WebSocket EventsResource |
+| 2026-03-14 | v1.0.0: npm publish ready・.npmignore・GitHub Actions publish.yml |
+| 2026-03-15 | v1.1.0: StatsResource・agent.getResult()・CreateTaskParams(roleId/outputFormat)拡張 |
