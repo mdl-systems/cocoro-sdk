@@ -25,3 +25,6 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
+
+# npm pack 生成物（GitHub Releases で管理）
+*.tgz
